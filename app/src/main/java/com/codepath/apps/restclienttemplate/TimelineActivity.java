@@ -1,10 +1,16 @@
 package com.codepath.apps.restclienttemplate;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +24,7 @@ import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +34,7 @@ import okhttp3.Headers;
 public class TimelineActivity extends AppCompatActivity {
 
     public static final String TAG = "TimelineActivity";
+    private final int REQUEST_CODE = 20;
 
     TwitterClient client;
     RecyclerView rvTweets;
@@ -68,11 +76,46 @@ public class TimelineActivity extends AppCompatActivity {
             Toast.makeText(this, "COMPOSE!", Toast.LENGTH_LONG).show();
             //Navigate to the compose activity
             Intent intent = new Intent(this, ComposeActivity.class);
-            startActivity(intent);
+//            startActivityForResult(intent, REQUEST_CODE);
+            editActivityResultLauncher.launch(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    ActivityResultLauncher<Intent> editActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    // If user comes back to activity
+                    // with no error or cancel
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        // Get data passed from composed tweet
+                        Tweet tweet = Parcels.unwrap(data.getParcelableExtra("tweet"));
+
+                        // Update the RV with the tweet
+                        // Modify the data source of tweets
+                        tweets.add(0, tweet);
+                        // Update the adapter
+                        adapter.notifyItemInserted(0);
+                        rvTweets.smoothScrollToPosition(0);
+                    }
+                }
+            }
+    );
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+//            // Get data from the intent (tweet object)
+//
+//            // Update RecyclerView with new tweet
+//
+//        }
+//        super.onActivityResult(requestCode, resultCode, data);
+//    }
 
     private void populateHomeTimeline() {
         client.getHomeTimeline(new JsonHttpResponseHandler() {
