@@ -13,16 +13,34 @@ public class Tweet {
     public String body;
     public String createdAt;
     public User user;
+    public String imageURL;
 
     // empty constructor for parceler
     public Tweet() {}
 
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
-        tweet.body = jsonObject.getString("text");
+        if(jsonObject.has("full_text")) {
+            tweet.body = jsonObject.getString("full_text");
+        } else {
+            tweet.body = jsonObject.getString("text");
+        }
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
+        tweet.imageURL = getImageURL(jsonObject);
+
         return tweet;
+    }
+
+    public static String getImageURL(JSONObject jsonObject) throws JSONException {
+        JSONObject entities = jsonObject.getJSONObject("entities");
+        if (entities.has("media")){
+            JSONArray mediaArray = entities.getJSONArray("media");
+            JSONObject media = (JSONObject) mediaArray.get(0);
+            String url = media.getString("media_url_https");
+            return url;
+        }
+        return "no url found";
     }
 
     public static List<Tweet> fromJsonArray(JSONArray jsonArray) throws JSONException {
