@@ -44,7 +44,10 @@
         android:layout_height="wrap_content"
         tools:text="HELLOTWEETBODYFDJOFPS"
         android:layout_below="@id/ivProfile"
-        android:layout_margin="5dp"/>
+        android:layout_margin="5dp"
+        android:autoLink="all"
+        android:linksClickable="true"
+        />
     <ImageView
         android:id="@+id/ivTweetImage"
         android:layout_width="match_parent"
