@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -35,8 +36,9 @@ import okhttp3.Headers;
 public class TimelineActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeContainer;
 
+    private EndlessRecyclerViewScrollListener scrollListener;
+
     public static final String TAG = "TimelineActivity";
-    private final int REQUEST_CODE = 20;
 
     TwitterClient client;
     RecyclerView rvTweets;
@@ -49,15 +51,10 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
 
         // lookup swipe container view
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        swipeContainer = findViewById(R.id.swipeContainer);
 
         // setup refresh listener which triggers new data loading
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                fetchTimelineAsync(0);
-            }
-        });
+        swipeContainer.setOnRefreshListener(() -> fetchTimelineAsync(0));
 
         client = TwitterApp.getRestClient(this);
 
@@ -68,11 +65,36 @@ public class TimelineActivity extends AppCompatActivity {
         tweets = new ArrayList<>();
         adapter = new TweetsAdapter(this, tweets);
 
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+
         // RecyclerView setup: layout manager and adapter
-        rvTweets.setLayoutManager(new LinearLayoutManager(this));
+        rvTweets.setLayoutManager(linearLayoutManager);
         rvTweets.setAdapter(adapter);
 
+        // for infinite scroll
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+//                loadNextDataFromApi(page);
+            }
+        };
+        rvTweets.addOnScrollListener(scrollListener);
+
+        // temp comment out for inf scroll
+         populateHomeTimeline();
+    }
+
+    public void loadNextDataFromApi(int offset) {
+        // Send an API request to retrieve appropriate paginated data
+        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
+        //  --> Deserialize and construct new model objects from the API response
+        //  --> Append the new data objects to the existing set of items inside the array of items
+        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
+        Log.i("peepeepopo", ""+offset);
         populateHomeTimeline();
+        rvTweets.smoothScrollToPosition(offset * 25 - 8);
     }
 
     public void fetchTimelineAsync(int page) {
@@ -136,17 +158,6 @@ public class TimelineActivity extends AppCompatActivity {
                 }
             }
     );
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-//            // Get data from the intent (tweet object)
-//
-//            // Update RecyclerView with new tweet
-//
-//        }
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
 
     private void populateHomeTimeline() {
         client.getHomeTimeline(new JsonHttpResponseHandler() {
