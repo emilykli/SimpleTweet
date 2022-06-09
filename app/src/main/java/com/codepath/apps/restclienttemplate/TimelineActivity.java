@@ -77,7 +77,7 @@ public class TimelineActivity extends AppCompatActivity {
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-//                loadNextDataFromApi(page);
+                loadNextDataFromApi(page);
             }
         };
         rvTweets.addOnScrollListener(scrollListener);
@@ -87,14 +87,29 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     public void loadNextDataFromApi(int offset) {
-        // Send an API request to retrieve appropriate paginated data
-        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
-        //  --> Deserialize and construct new model objects from the API response
-        //  --> Append the new data objects to the existing set of items inside the array of items
-        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
-        Log.i("peepeepopo", ""+offset);
-        populateHomeTimeline();
-        rvTweets.smoothScrollToPosition(offset * 25 - 8);
+        long maxID = tweets.get(tweets.size() - 1).ID;
+        client.getNextTweets(maxID, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.d("addTweets", "letsgoo added tweet");
+
+                JSONArray jsonArray = json.jsonArray;
+                try {
+                    tweets.addAll(Tweet.fromJsonArray(jsonArray));
+                    // 25 is number of tweets pulled from client each time
+                    adapter.notifyItemInserted(offset * 25);
+                } catch (JSONException e) {
+                    Log.d("addTweets", "shid tweet not added", e);
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.d("addTweets", "Add new tweets error: " + throwable);
+            }
+        });
     }
 
     public void fetchTimelineAsync(int page) {
@@ -107,6 +122,7 @@ public class TimelineActivity extends AppCompatActivity {
                 adapter.clear();
                 populateHomeTimeline();
                 swipeContainer.setRefreshing(false);
+                scrollListener.resetState();
             }
 
             @Override

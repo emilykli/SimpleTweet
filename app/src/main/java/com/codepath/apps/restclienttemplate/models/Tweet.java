@@ -25,6 +25,7 @@ public class Tweet {
     public String timeAgo;
     public User user;
     public String imageURL;
+    public long ID;
 
     // empty constructor for parceler
     public Tweet() {}
@@ -41,6 +42,7 @@ public class Tweet {
         tweet.timeAgo = "· "+ tweet.getRelativeTimeAgo(tweet.createdAt);
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.imageURL = getImageURL(jsonObject);
+        tweet.ID = jsonObject.getLong("id");
 
         return tweet;
     }
