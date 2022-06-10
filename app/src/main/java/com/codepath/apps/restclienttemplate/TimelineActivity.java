@@ -95,7 +95,7 @@ public class TimelineActivity extends AppCompatActivity {
 
                 JSONArray jsonArray = json.jsonArray;
                 try {
-                    tweets.addAll(Tweet.fromJsonArray(jsonArray));
+                    tweets.addAll(Tweet.getTweetsFromJsonArray(jsonArray));
                     // 25 is number of tweets pulled from client each time
                     adapter.notifyItemInserted(offset * 25);
                 } catch (JSONException e) {
@@ -182,7 +182,7 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.i(TAG, "onSuccess!" + json.toString());
                 JSONArray jsonArray = json.jsonArray;
                 try {
-                    tweets.addAll(Tweet.fromJsonArray(jsonArray));
+                    tweets.addAll(Tweet.getTweetsFromJsonArray(jsonArray));
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     Log.e(TAG, "Json exception", e);
