@@ -8,10 +8,10 @@
 
     <ImageView
         android:id="@+id/ivProfile"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="@dimen/avatar_img_size"
+        android:layout_height="@dimen/avatar_img_size"
+        android:layout_marginLeft="@dimen/wide_tweets_margin"
+        android:layout_marginTop="@dimen/wide_tweets_margin"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -21,10 +21,10 @@
         android:textStyle="bold"
         tools:text="Name"
         android:layout_toEndOf="@id/ivProfile"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="5dp"
-        android:textSize="20sp"
-        tools:textSize="20sp"
+        android:layout_marginTop="@dimen/tweets_margin"
+        android:layout_marginLeft="@dimen/tweets_margin"
+        android:textSize="@dimen/detailed_screen_name_size"
+        tools:textSize="@dimen/detailed_screen_name_size"
         />
 
     <TextView
@@ -34,9 +34,9 @@
         tools:text="\@ballswww"
         android:layout_toEndOf="@id/ivProfile"
         android:layout_below="@id/tvName"
-        android:layout_marginLeft="5dp"
-        android:textSize="15sp"
-        tools:textSize="15sp"
+        android:layout_marginLeft="@dimen/tweets_margin"
+        android:textSize="@dimen/detailed_username_size"
+        tools:textSize="@dimen/detailed_username_size"
         />
     <TextView
         android:id="@+id/tvBody"
@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         tools:text="HELLOTWEETBODYFDJOFPS"
         android:layout_below="@id/ivProfile"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/tweets_margin"
         android:autoLink="all"
         android:linksClickable="true"
         />
@@ -54,6 +54,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tvBody"
         tools:srcCompat="@tools:sample/avatars"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/tweets_margin"
         />
 </RelativeLayout>

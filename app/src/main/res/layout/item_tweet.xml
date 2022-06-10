@@ -5,12 +5,12 @@
     android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp">
+    android:layout_margin="@dimen/tweets_margin">
 
     <ImageView
         android:id="@+id/ivProfileImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/avatar_img_size"
+        android:layout_height="@dimen/avatar_img_size"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         tools:srcCompat="@tools:sample/avatars" />
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/ivProfileImage"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="@dimen/tweets_margin"
         android:textStyle="bold"
         tools:text="Balls Name"
         />
@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/tvName"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="@dimen/tweets_margin"
         tools:text="balls12"
         />
 
@@ -40,8 +40,8 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/ivProfileImage"
         android:layout_below="@id/tvScreenName"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginStart="@dimen/tweets_margin"
+        android:layout_marginTop="@dimen/slim_tweets_margin"
         android:autoLink="all"
         android:linksClickable="true"
         tools:text="me when balls" />
@@ -50,7 +50,7 @@
         android:id="@+id/ivTweetImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/tweets_margin"
         android:layout_below="@id/tvBody"
         android:layout_toEndOf="@id/ivProfileImage"
         tools:srcCompat="@tools:sample/avatars" />
@@ -60,7 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/tvScreenName"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="@dimen/tweets_margin"
         tools:text="| a minute ago"/>
 
 

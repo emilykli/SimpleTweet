@@ -42,7 +42,7 @@ public class DetailsActivity extends AppCompatActivity {
         tvScreenName.setText(tweet.user.screenName);
         tvName.setText(tweet.user.name);
         tvBody.setText(tweet.body);
-        Glide.with(this).load(tweet.user.profileImageUrl).into(ivProfileImage);
+        Glide.with(this).load(tweet.user.profileImageUrl).circleCrop().into(ivProfileImage);
         if(tweet.imageURL == "no url found") {
             ivTweetImage.setVisibility(View.GONE);
         }
