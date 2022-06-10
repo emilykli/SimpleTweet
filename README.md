@@ -47,7 +47,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='./twitter_demo.gif' title='Video Walkthrough' width='300' alt='Video Walkthrough' />
+<img src='./twitter_demo.gif' title='Video Walkthrough' width='300' alt='Video Walkthrough' /> <img src='./swipe_refresh.gif' title='Video Walkthrough' width='300' alt='Video Walkthrough' /> <img src='./link_open.gif' title='Video Walkthrough' width='300' alt='Video Walkthrough' />
 
 ## Notes
 
